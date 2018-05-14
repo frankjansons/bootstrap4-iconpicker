@@ -1,6 +1,4 @@
 .iconMenu {
-	overflow-y: scroll;
-	max-height: 250px;
 	position: absolute;
     z-index: 1000;
     float: left;
@@ -15,4 +13,8 @@
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: .25rem;
+}
+.iconTabPane {
+	overflow-y: scroll;
+	max-height: 250px;
 }

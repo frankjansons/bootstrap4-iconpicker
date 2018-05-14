@@ -7,6 +7,8 @@ $.fn.iconPicker = function() {
 		var $files = ["fa-regular","fa-solid","fa-brands"];
 		//Name of the navtab with icons
 		var $categories = ["Regular","Solid","Brands"];
+		//Prefix for icon class
+		var $prefix = ["far fa-","fas fa-","fab fa-"];
 		//Number of icons in a row
 		var $nrOfIconsPerRow = 10;
 		
@@ -25,11 +27,11 @@ $.fn.iconPicker = function() {
 		}
 		
 		$.each($files,function($idx,$file) {
-			$.get("https://core2.frankjansons.nl/iconpicker/data/"+$file+".list",function($data, $status){
+			$.get("data/"+$file+".list",function($data, $status){
 				$icons = $data.split("\n");
 				$class = $first ? "nav-link active" : "nav-link";
 				$('ul#iconTab'+$iconPicker).append('<li class="nav-item"><a class="'+$class+'" id="'+$file+'-tab" data-toggle="tab" href="#'+$file+$iconPicker+'" role="tab" aria-controls="'+$file+$iconPicker+'" aria-selected="false">'+$categories[$idx]+'</a></li>');
-				$('div#iconTabContent'+$iconPicker).append(tabblad($icons,$file));
+				$('div#iconTabContent'+$iconPicker).append(iconTab($icons,$file,$idx));
 				$('#table'+$iconPicker+'>tbody>tr>td.iconOption').css('cursor','pointer');
 				$('#table'+$iconPicker+'>tbody>tr>td.iconOption').click(function(){
 					$click = $(this).html();
@@ -41,24 +43,31 @@ $.fn.iconPicker = function() {
 						$('#iconMenu'+$iconPicker).hide();
 					}
 				});
+				$('#myInput'+$file+$iconPicker).on("keyup", function() {
+					var value = $(this).val().toLowerCase();
+					$('#table'+$iconPicker+' td').filter(function() {
+					  $(this).toggle($(this).html().toLowerCase().indexOf(value) > -1)
+					});
+				});
 			});
 		});
 		
-		function tabblad($icons,$file) {
-			$class = $first ? "tab-pane fade show active" : "tab-pane fade";
+		function iconTab($icons,$file,$idx) {
+			$class = $first ? "iconTabPane tab-pane fade show active" : "iconTabPane tab-pane fade";
 			$html = '<div class="'+$class+'" id="'+$file+$iconPicker+'" role="tabpanel" aria-labelledby="'+$file+$iconPicker+'-tab"><table class="table" id="table'+$iconPicker+'">';
+			$html += '<input id="myInput'+$file+$iconPicker+'" type="text" class="form-control" placeholder="Search..">';
 			$last = 0;
-			$.each($icons,function($idx,$icon){
+			$.each($icons,function($rnr,$icon){
 				$icon = $icon.slice(0,-1); //remove linebreak
-				if($idx % $nrOfIconsPerRow == 0) {
+				if($rnr % $nrOfIconsPerRow == 0) {
 					$html += '<tr>';
 				}
-				$html += '<td class="iconOption"><i class="'+$file.substring(0, 4).replace("-","")+' fa-'+$icon+'"></i></td>';
+				$html += '<td class="iconOption"><i class="'+$prefix[$idx]+$icon+'"></i></td>';
 				
-				if($idx % $nrOfIconsPerRow == $nrOfIconsPerRow - 1) {
+				if($rnr % $nrOfIconsPerRow == $nrOfIconsPerRow - 1) {
 					$html += '</tr>';
 				}
-				$last = $idx % $nrOfIconsPerRow;
+				$last = $rnr % $nrOfIconsPerRow;
 			});
 			for($i=$last; $i<$nrOfIconsPerRow-1; $i++) {
 				$html += '<td>&nbsp;</td>';
@@ -74,8 +83,8 @@ $.fn.iconPicker = function() {
 		$button.click(function() {
 			$('#iconMenu'+$iconPicker).toggle();
 		});
-	
-	
+
+
 	});
  
 };

@@ -12,25 +12,24 @@
   <link rel="stylesheet" href="https://core2.frankjansons.nl/iconpicker/picker.css" />
   <script>
   $(document).ready(function() {
-	$('#a').iconPicker();
-	$('#b').iconPicker();
+	$('.iconpicker').iconPicker();
   });
   </script>
 </head>
 <body>
 <?
 if(isset($_POST)) {
-	echo '<pre>'.print_r($_POST,true),'</pre>';
+	echo '<div class="alert alert-info" alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>$_POST</strong><pre> '.print_r($_POST,true),'</pre></div>';
 }
 ?>
 <form action="" method="post">
   <div class="form-group">
     <label for="exampleFormControlInput1">Kies eerste icoontje</label>
-    <button id="a" type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" placeholder="<? echo isset($_POST['a']) ? $_POST['a'] : ""; ?>"><i>Choose icon</i></button>
+    <button id="a" type="button" class="btn btn-default dropdown-toggle iconpicker" placeholder="<? echo isset($_POST['a']) ? $_POST['a'] : ""; ?>"><i>Choose icon</i></button>
   </div>
   <div class="form-group">
     <label for="exampleFormControlInput1">Kies tweede icoontje</label>
-    <button id="b" type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" placeholder="<? echo isset($_POST['b']) ? $_POST['b'] : ""; ?>"><i>Choose icon</i></button>
+    <button id="b" type="button" class="btn btn-default dropdown-toggle iconpicker" placeholder="<? echo isset($_POST['b']) ? $_POST['b'] : ""; ?>"><i>Choose icon</i></button>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
